@@ -87,7 +87,7 @@ class UsulanResource extends Resource
                             ->disabled($isLabUser)
                             ->dehydrated(),
                         Forms\Components\FileUpload::make('lampiran')
-                            ->label('Dokumen Pendukungg (Opsional)')
+                            ->label('Dokumen Pendukung (Opsional)')
                             ->directory('dokumen-pendukung-usulan')
                             ->openable()
                             ->downloadable()
