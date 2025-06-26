@@ -28,7 +28,7 @@ class LabResource extends Resource
                     ->maxLength(255)
                     // Membuat nama lab unik, kecuali untuk data yang sedang diedit
                     ->unique(ignoreRecord: true),
-                Forms\Components\Textarea::make('deskripsi')
+                Forms\Components\Textarea::make('deskripsii')
                     ->maxLength(65535)
                     ->columnSpanFull(),
             ]);
