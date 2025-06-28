@@ -124,7 +124,6 @@ php artisan migrate && php artisan db:seed && php artisan shield:generate --all
 
 ```bash
 php artisan db:seed --class=PermissionsSeeder
-```
 
 Generate key:
 
