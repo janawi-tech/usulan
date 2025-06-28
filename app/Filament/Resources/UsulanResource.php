@@ -90,6 +90,7 @@ class UsulanResource extends Resource
                         Forms\Components\FileUpload::make('lampiran')
                             ->label('Dokumen Pendukung (Bisa lebih dari satu)')
                             ->directory('dokumen-pendukung-usulan')
+                            ->preserveFilenames() // <-- PERUBAHAN DI SINI
                             ->multiple()
                             ->reorderable()
                             ->appendFiles()
@@ -318,6 +319,10 @@ class UsulanResource extends Resource
                             Forms\Components\FileUpload::make('bukti_serah_terima')
                                 ->label('Bukti Serah Terima (BAST/Foto)')
                                 ->directory('bukti-serah-terima')
+                                ->preserveFilenames() // <-- PERUBAHAN DI SINI
+                                ->multiple()
+                                ->reorderable()
+                                ->appendFiles()
                                 ->required(),
                             Forms\Components\Textarea::make('catatan_serah_terima')
                                 ->label('Catatan (Opsional)'),
