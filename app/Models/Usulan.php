@@ -17,11 +17,8 @@ class Usulan extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        // KOLOM BARU
         'judul_usulan',
-        'lampiran',
-
-        // Kolom lama yang tetap ada
+        'lampiran',              // DIPERBAIKI: hanya nama field, bukan casting
         'user_id',
         'lab_id',
         'tanggal_usulan',
@@ -39,7 +36,7 @@ class Usulan extends Model
         'ppk_processed_at',
         'catatan_ppk',
         'ditunda_hingga',
-        'bukti_serah_terima',
+        'bukti_serah_terima',    // DIPERBAIKI: hanya nama field, bukan casting
         'catatan_serah_terima',
         'serah_terima_at',
     ];
@@ -57,10 +54,43 @@ class Usulan extends Model
         'ppk_processed_at' => 'datetime',
         'ditunda_hingga' => 'date',
         'serah_terima_at' => 'datetime',
+
+        // --- DIPERBAIKI: Kedua field JSON harus ada di sini ---
+        'lampiran' => 'array',
+        'bukti_serah_terima' => 'array',
     ];
 
     /**
-     * RELASI BARU: Satu Usulan memiliki banyak UsulanItem.
+     * Custom accessor untuk bukti_serah_terima
+     * Handle jika data tersimpan sebagai string single file
+     */
+    public function getBuktiSerahTerimaAttribute($value)
+    {
+        if (empty($value)) {
+            return [];
+        }
+
+        // Jika sudah array (dari casting), return as is
+        if (is_array($value)) {
+            return $value;
+        }
+
+        // Jika string, coba decode JSON dulu
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            if ($decoded && is_array($decoded)) {
+                return $decoded;
+            }
+
+            // Jika bukan JSON, treat sebagai single file
+            return [$value];
+        }
+
+        return [];
+    }
+
+    /**
+     * Relasi ke rincian barang.
      */
     public function items(): HasMany
     {
@@ -68,7 +98,7 @@ class Usulan extends Model
     }
 
     /**
-     * Get the user that created the usulan.
+     * Relasi ke pengguna yang membuat.
      */
     public function user(): BelongsTo
     {
@@ -76,7 +106,7 @@ class Usulan extends Model
     }
 
     /**
-     * Get the lab for this usulan.
+     * Relasi ke lab.
      */
     public function lab(): BelongsTo
     {
@@ -84,7 +114,7 @@ class Usulan extends Model
     }
 
     /**
-     * Get the TAOP user who checked the usulan.
+     * Relasi ke pemeriksa TAOP.
      */
     public function pemeriksa(): BelongsTo
     {
@@ -92,7 +122,7 @@ class Usulan extends Model
     }
 
     /**
-     * Get the Adum user who approved the usulan.
+     * Relasi ke pemeriksa Adum.
      */
     public function adum(): BelongsTo
     {
@@ -100,7 +130,7 @@ class Usulan extends Model
     }
 
     /**
-     * Get the Pimpinan user who approved the usulan.
+     * Relasi ke pemeriksa Pimpinan.
      */
     public function pimpinan(): BelongsTo
     {
@@ -108,7 +138,7 @@ class Usulan extends Model
     }
 
     /**
-     * Get the PPK user who processed the usulan.
+     * Relasi ke pemroses PPK.
      */
     public function ppk(): BelongsTo
     {

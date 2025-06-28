@@ -1,12 +1,10 @@
 <?php
 
-// app/Policies/LabPolicy.php
 namespace App\Policies;
 
-use App\Models\Lab;
 use App\Models\User;
+use App\Models\Lab;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class LabPolicy
 {
@@ -53,7 +51,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can delete any models.
+     * Determine whether the user can bulk delete.
      */
     public function deleteAny(User $user): bool
     {
@@ -61,7 +59,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete.
      */
     public function forceDelete(User $user, Lab $lab): bool
     {
@@ -69,7 +67,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete any models.
+     * Determine whether the user can permanently bulk delete.
      */
     public function forceDeleteAny(User $user): bool
     {
@@ -77,7 +75,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore.
      */
     public function restore(User $user, Lab $lab): bool
     {
@@ -85,7 +83,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can restore any models.
+     * Determine whether the user can bulk restore.
      */
     public function restoreAny(User $user): bool
     {
@@ -93,7 +91,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can replicate the model.
+     * Determine whether the user can replicate.
      */
     public function replicate(User $user, Lab $lab): bool
     {
@@ -101,7 +99,7 @@ class LabPolicy
     }
 
     /**
-     * Determine whether the user can reorder the models.
+     * Determine whether the user can reorder.
      */
     public function reorder(User $user): bool
     {

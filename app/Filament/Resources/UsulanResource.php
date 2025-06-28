@@ -16,13 +16,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class UsulanResource extends Resource
 {
     protected static ?string $model = Usulan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'Master Data';
 
     public static function getEloquentQuery(): Builder
     {
@@ -87,8 +88,11 @@ class UsulanResource extends Resource
                             ->disabled($isLabUser)
                             ->dehydrated(),
                         Forms\Components\FileUpload::make('lampiran')
-                            ->label('Dokumen Pendukung (Opsional)')
+                            ->label('Dokumen Pendukung (Bisa lebih dari satu)')
                             ->directory('dokumen-pendukung-usulan')
+                            ->multiple()
+                            ->reorderable()
+                            ->appendFiles()
                             ->openable()
                             ->downloadable()
                             ->previewable(true)
@@ -126,6 +130,13 @@ class UsulanResource extends Resource
                 Tables\Columns\TextColumn::make('judul_usulan')
                     ->searchable()
                     ->description(fn(Usulan $record): string => "Lab: {$record->lab->nama_lab}"),
+
+                Tables\Columns\TextColumn::make('tanggal_usulan')
+                    ->date('d M Y')
+                    ->sortable()
+                    ->label('Tgl. Usulan')
+                    ->color('gray')
+                    ->weight('medium'),
 
                 IconColumn::make('diperiksa_oleh_id')
                     ->label('TAOP')
@@ -199,11 +210,6 @@ class UsulanResource extends Resource
                         default => 'gray',
                     })
                     ->searchable(),
-
-                Tables\Columns\TextColumn::make('tanggal_usulan')
-                    ->date('d M Y')
-                    ->sortable()
-                    ->label('Tgl. Usulan'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('lab_id')
@@ -374,6 +380,18 @@ class UsulanResource extends Resource
                     Tables\Actions\DeleteAction::make()
                         ->visible(fn(Usulan $record) => in_array($record->status, ['diajukan', 'ditolak_taop'])),
                 ]),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn(Usulan $record) => in_array($record->status, ['diajukan', 'ditolak_taop'])),
+                ]),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Ekspor ke Excel')
+                    ->icon('heroicon-o-document-arrow-down'),
             ]);
     }
 

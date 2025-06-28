@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Usulan;
 use App\Models\User;
+use App\Models\Usulan;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class UsulanPolicy
 {
@@ -52,7 +51,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can delete any models.
+     * Determine whether the user can bulk delete.
      */
     public function deleteAny(User $user): bool
     {
@@ -60,7 +59,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete.
      */
     public function forceDelete(User $user, Usulan $usulan): bool
     {
@@ -68,7 +67,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete any models.
+     * Determine whether the user can permanently bulk delete.
      */
     public function forceDeleteAny(User $user): bool
     {
@@ -76,7 +75,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore.
      */
     public function restore(User $user, Usulan $usulan): bool
     {
@@ -84,7 +83,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can restore any models.
+     * Determine whether the user can bulk restore.
      */
     public function restoreAny(User $user): bool
     {
@@ -92,7 +91,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can replicate the model.
+     * Determine whether the user can replicate.
      */
     public function replicate(User $user, Usulan $usulan): bool
     {
@@ -100,7 +99,7 @@ class UsulanPolicy
     }
 
     /**
-     * Determine whether the user can reorder the models.
+     * Determine whether the user can reorder.
      */
     public function reorder(User $user): bool
     {
